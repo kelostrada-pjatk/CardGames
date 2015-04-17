@@ -12,5 +12,10 @@ namespace CardGames.CardLists
         {
             get { throw new NotImplementedException(); }
         }
+
+        public Collection(bool isPublic, string name) : base(isPublic, name)
+        {
+
+        }
     }
 }

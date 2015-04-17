@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CardGames
 {
-    public class Game
+    public class Game : ClassExtension
     {
         public string Name { get; private set; }
         public int YearOfRelease { get; private set; }
@@ -28,5 +28,10 @@ namespace CardGames
             _editions.Add(edition);
         }
 
+        public void AddEdition(string name, int yearOfRelease)
+        {
+            var edition = new Edition(this, name, yearOfRelease);
+            AddEdition(edition);
+        }
     }
 }
