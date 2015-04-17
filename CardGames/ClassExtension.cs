@@ -48,8 +48,8 @@ namespace CardGames
 
         public static List<T> GetAll<T>() where T : ClassExtension
         {
-            return _extensions[typeof (T)].Select(c => c as T).ToList();
+            return !_extensions.ContainsKey(typeof (T)) ? 
+                new List<T>() : _extensions[typeof (T)].Select(c => c as T).ToList();
         }
-
     }
 }

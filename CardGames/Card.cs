@@ -13,5 +13,10 @@ namespace CardGames
             Name = name;
             Description = description;
         }
+
+        public override string ToString()
+        {
+            return String.Format("{0}\nDescription:\n{1}", Name, Description);
+        }
     }
 }

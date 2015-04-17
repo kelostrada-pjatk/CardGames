@@ -7,19 +7,33 @@ namespace CardGames
     public class Edition
     {
         public string Name { get; private set; }
-        public int YearOfRelease { get; private set; }
+        private int? _yearOfRelease;
+
+        public string YearOfRelease
+        {
+            get { return _yearOfRelease == null ? "<none>" : _yearOfRelease.ToString(); }
+        }
+
         public Game Game { get; private set; }
         public EditionCardList CardList { get; private set; }
 
-        public Edition(Game game, string name, int yearOfRelease)
+        public Edition(Game game, string name)
         {
             Game = game;
             Game.AddEdition(this);
             Name = name;
-            YearOfRelease = yearOfRelease;
             CardList = new EditionCardList(this);
         }
 
+        public Edition(Game game, string name, int yearOfRelease)
+            : this(game, name)
+        {
+            _yearOfRelease = yearOfRelease;
+        }
 
+        public override string ToString()
+        {
+            return String.Format("{0}\nRelease year: {1}", Name, YearOfRelease);
+        }
     }
 }
