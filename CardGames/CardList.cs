@@ -7,6 +7,7 @@ namespace CardGames
     [Serializable]
     public abstract class CardList : ClassExtension
     {
+        [Serializable]
         public class CardWithQuantity
         {
             public Card Card { get; set; }

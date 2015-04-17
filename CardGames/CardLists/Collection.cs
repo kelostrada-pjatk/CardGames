@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CardGames.CardLists
 {
+    [Serializable]
     public class Collection : CardList
     {
         public override string Link
@@ -15,7 +12,6 @@ namespace CardGames.CardLists
 
         public Collection(bool isPublic, string name) : base(isPublic, name)
         {
-
         }
     }
 }

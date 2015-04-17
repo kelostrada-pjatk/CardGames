@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace CardGames.Social
 {
+    [Serializable]
     public class Comment : BaseMessage
     {
         public Comment(string description, User author) 

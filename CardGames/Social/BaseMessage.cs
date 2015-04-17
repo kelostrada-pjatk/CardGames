@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CardGames.Social
 {
+    [Serializable]
     public abstract class BaseMessage : ClassExtension
     {
         public string Description { get; protected set; }

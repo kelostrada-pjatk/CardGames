@@ -3,6 +3,7 @@ using System.Linq;
 
 namespace CardGames.CardLists
 {
+    [Serializable]
     public class EditionCardList : CardList
     {
         public Edition Edition { get; private set; }

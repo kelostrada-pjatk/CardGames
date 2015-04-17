@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CardGames
 {
+    [Serializable]
     public class Game : ClassExtension
     {
         public string Name { get; private set; }
