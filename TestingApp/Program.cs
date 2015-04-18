@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using CardGames;
 
 namespace TestingApp
@@ -16,8 +17,9 @@ namespace TestingApp
         static void Main(string[] args)
         {
             ClassExtension.LoadData();
-
+            
             /*
+            
             var cardfight = new Game("Cardfight!! Vanguard", 2012);
             var edition = new Edition(cardfight, "Descent of the King of Knights");
             edition.CardList.AddCard(new Card("King of Knights, Alfred", "[CONT](VC):Your units cannot boost this unit."));
@@ -32,9 +34,35 @@ namespace TestingApp
             
             Console.WriteLine("Games:");
             PrintAll<Game>();
-            Console.WriteLine("\nCards:");
-            PrintAll<Card>();
 
+            //ClassExtension.GetAll<Game>().First().Editions.First().CardList.RemoveCard(1);
+
+            Console.WriteLine("\nCards:");
+            foreach (var card in ClassExtension.GetAll<Card>())
+            {
+                if (card.IsPublished == null)
+                {
+                    Console.WriteLine("Card {0} publish status is not set. Please chose if the card should be published? Y/N/I(gnore)", card.Name);
+                    var line = Console.ReadLine();
+                    line = line == null ? "" : line.ToUpper();
+                    while (line != "Y" && line != "N" && line != "I")
+                    {
+                        line = Console.ReadLine();
+                    }
+                    switch (line)
+                    {
+                        case "Y":
+                            card.Publish();
+                            break;
+                        case "N":
+                            card.Hide();
+                            break;
+                    }
+                }
+                Console.WriteLine(card);
+                Console.WriteLine("-------------------------------");
+            }
+            
             ClassExtension.SaveData();
 
 

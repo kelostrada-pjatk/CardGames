@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using CardGames.CardLists;
 
@@ -7,21 +8,45 @@ namespace CardGames.Social
     [Serializable]
     public class User : ClassExtension
     {
+        public static int MinPasswordLength = 5;
         public string Login { get; private set; }
         private int Password { get; set; }
-        public string Email { get; private set; }
-        private readonly HashSet<Deck> _decks = new HashSet<Deck>(); 
+        public ContactData ContactData { get; private set; }
 
-        public User(string login, string password, string email)
+        private readonly HashSet<Deck> _decks = new HashSet<Deck>();
+        
+        public List<DateTime> LoginHistory { get; private set; }
+
+        public DateTime LastLogin
         {
+            get
+            {
+                return LoginHistory.Last();
+            }
+        }
+
+        public User(string login, string password, string email, string phoneNumber)
+        {
+            if (password.Length < MinPasswordLength)
+            {
+                throw new Exception("Password too short");
+            }
             Login = login;
             Password = password.GetHashCode();
-            Email = email;
+            ContactData = new ContactData();
+            ContactData.Email = email;
+            ContactData.Phone = phoneNumber;
+            LoginHistory = new List<DateTime>();
         }
 
         public bool CheckLogin(string password)
         {
-            return password.GetHashCode() == Password;
+            if (password.GetHashCode() == Password)
+            {
+                LoginHistory.Add(DateTime.Now);
+                return true;
+            }
+            return false;
         }
 
         public void Comment(Deck deck, string commentDescription)
@@ -43,5 +68,25 @@ namespace CardGames.Social
             _decks.Add(deck);
             return deck;
         }
+
+        public static User LoginUser(string login, string password) {
+            var user = GetUserByLogin(login);
+            if (user != null && user.CheckLogin(password))
+            {
+                return user;
+            }
+            return null;
+        }
+
+        public static List<User> GetAllUsers()
+        {
+            return GetAll<User>();
+        }
+
+        public static User GetUserByLogin(string login)
+        {
+            return GetAllUsers().FirstOrDefault(u => u.Login == login);
+        }
+
     }
 }

@@ -27,6 +27,14 @@ namespace CardGames
             _extensions[GetType()].Add(this);
         }
 
+        public void RemoveFromExtensions()
+        {
+            if (_extensions.ContainsKey(GetType()))
+            {
+                _extensions[GetType()].Remove(this);
+            }
+        }
+
         public static void SaveData()
         {
             var formatter = new BinaryFormatter();

@@ -7,14 +7,14 @@ namespace CardGames
     public class Edition
     {
         public string Name { get; private set; }
-        private int? _yearOfRelease;
+        private int? _yearOfRelease; // atr. opcjonalny
 
         public string YearOfRelease
         {
             get { return _yearOfRelease == null ? "<none>" : _yearOfRelease.ToString(); }
         }
 
-        public Game Game { get; private set; }
+        public Game Game { get; private set; } // atr. złożony
         public EditionCardList CardList { get; private set; }
 
         public Edition(Game game, string name)

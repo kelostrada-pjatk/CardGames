@@ -8,7 +8,7 @@ namespace CardGames.CardLists
     public class Deck : CardList
     {
         public User Owner { get; private set; }
-        private readonly HashSet<Comment> _comments = new HashSet<Comment>(); 
+        private readonly HashSet<Comment> _comments = new HashSet<Comment>(); // atr. powt.
 
         public override string Link
         {

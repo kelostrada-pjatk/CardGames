@@ -23,6 +23,14 @@ namespace CardGames
         public bool Public { get; set; }
         public string Name { get; set; }
 
+        public int Quantity
+        {
+            get
+            {
+                return CardsList.Sum(c => c.Value.Quantity);
+            }
+        }
+
         public abstract string Link { get; }
 
         protected Dictionary<int, CardWithQuantity> CardsList = new Dictionary<int, CardWithQuantity>();
@@ -38,6 +46,14 @@ namespace CardGames
             return CardsList.Values.FirstOrDefault(c => c.Card == card);
         }
 
+        public void AddCards(IEnumerable<Card> cards)
+        {
+            foreach (var c in cards)
+            {
+                AddCard(c);
+            }
+        }
+
         public void AddCard(Card card)
         {
             var cardWithQuantity = GetCard(card);
@@ -51,14 +67,6 @@ namespace CardGames
                 index = CardsList.First(p => p.Value.Card == card).Key;
             }
             AddCard(index, card);
-        }
-
-        public void AddCards(IEnumerable<Card> cards)
-        {
-            foreach (var c in cards)
-            {
-                AddCard(c);
-            }
         }
 
         public void AddCard(int index, Card card)
@@ -109,6 +117,7 @@ namespace CardGames
             }
             else
             {
+                CardsList[index].Card.RemoveFromExtensions();
                 CardsList.Remove(index);
             }
         }
