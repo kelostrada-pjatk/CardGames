@@ -33,9 +33,7 @@ namespace CardGames.Social
             }
             Login = login;
             Password = password.GetHashCode();
-            ContactData = new ContactData();
-            ContactData.Email = email;
-            ContactData.Phone = phoneNumber;
+            ContactData = new ContactData {Email = email, Phone = phoneNumber};
             LoginHistory = new List<DateTime>();
         }
 

@@ -1,24 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CardGames.CardLists;
 
 namespace CardGames
 {
     [Serializable]
     public abstract class CardList : ClassExtension
     {
-        [Serializable]
-        public class CardWithQuantity
-        {
-            public Card Card { get; set; }
-            public int Quantity { get; set; }
-
-            public CardWithQuantity(Card card, int quantity)
-            {
-                Card = card;
-                Quantity = quantity;
-            }
-        }
 
         public bool Public { get; set; }
         public string Name { get; set; }
@@ -27,23 +16,24 @@ namespace CardGames
         {
             get
             {
-                return CardsList.Sum(c => c.Value.Quantity);
+                return Cards.Sum(c => c.Quantity);
             }
         }
 
         public abstract string Link { get; }
 
-        protected Dictionary<int, CardWithQuantity> CardsList = new Dictionary<int, CardWithQuantity>();
-
+        protected List<CardInList> Cards { get; set; }
+        
         protected CardList(bool isPublic, string name)
         {
             Public = isPublic;
             Name = name;
+            Cards = new List<CardInList>();
         }
 
-        protected CardWithQuantity GetCard(Card card)
+        protected CardInList GetCard(Card card)
         {
-            return CardsList.Values.FirstOrDefault(c => c.Card == card);
+            return Cards.FirstOrDefault(c => c.Card == card);
         }
 
         public void AddCards(IEnumerable<Card> cards)
@@ -56,15 +46,15 @@ namespace CardGames
 
         public void AddCard(Card card)
         {
-            var cardWithQuantity = GetCard(card);
+            var cardInList = GetCard(card);
             int index;
-            if (cardWithQuantity == null)
+            if (cardInList == null)
             {
-                index = CardsList.Keys.Count == 0 ? 1 : CardsList.Keys.Max() + 1;
+                index = Cards.Count == 0 ? 1 : Cards.Max(c => c.Index) + 1;
             }
             else
             {
-                index = CardsList.First(p => p.Value.Card == card).Key;
+                index = Cards.First(p => p.Card == card).Index;
             }
             AddCard(index, card);
         }
@@ -76,27 +66,30 @@ namespace CardGames
 
         public virtual void AddCard(int index, Card card, int quantity)
         {
-            if (CardsList.ContainsKey(index) && card == CardsList[index].Card)
+            var cardInList = Cards.FirstOrDefault(c => c.Index == index);
+            if (cardInList != null && cardInList.Card == card)
             {
-                CardsList[index].Quantity += quantity;
+                cardInList.Quantity += quantity;
             }
-            else if (CardsList.Any(c => c.Value.Card == card))
+            else if (Cards.Any(c => c.Card == card))
             {
                 throw new Exception("The indexes of given card don't match");
             }
             else
             {
-                CardsList.Add(index, new CardWithQuantity(card, quantity));
+                cardInList = new CardInList(card, this, index, quantity);
+                Cards.Add(cardInList);
+                card.AddToList(cardInList);
             }
         }
 
         public void RemoveCard(Card card)
         {
-            if (CardsList.All(c => c.Value.Card != card))
+            if (Cards.All(c => c.Card != card))
             {
                 throw new Exception("Card list does not contain selected card.");
             }
-            RemoveCard(CardsList.First(c => c.Value.Card == card).Key);
+            RemoveCard(Cards.First(c => c.Card == card).Index);
         }
 
         public void RemoveCard(int index)
@@ -106,19 +99,18 @@ namespace CardGames
 
         public virtual void RemoveCard(int index, int quantity)
         {
-            if (!CardsList.ContainsKey(index))
+            if (Cards.All(c => c.Index != index))
             {
                 throw new Exception("Card list does not contain selected card.");
             }
-            var card = CardsList[index];
-            if (card.Quantity > quantity)
+            var cardInList = Cards.First(c => c.Index == index);
+            if (cardInList.Quantity > quantity)
             {
-                card.Quantity -= quantity;
+                cardInList.Quantity -= quantity;
             }
             else
             {
-                CardsList[index].Card.RemoveFromExtensions();
-                CardsList.Remove(index);
+                Cards.Remove(cardInList);
             }
         }
     }

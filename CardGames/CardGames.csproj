@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="Card.cs" />
     <Compile Include="CardList.cs" />
+    <Compile Include="CardLists\CardInList.cs" />
     <Compile Include="CardLists\Collection.cs" />
     <Compile Include="CardLists\Deck.cs" />
     <Compile Include="ClassExtension.cs" />

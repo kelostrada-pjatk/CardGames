@@ -16,9 +16,8 @@ namespace TestingApp
 
         static void Main(string[] args)
         {
-            ClassExtension.LoadData();
-            
-            /*
+            //ClassExtension.LoadData();
+
             
             var cardfight = new Game("Cardfight!! Vanguard", 2012);
             var edition = new Edition(cardfight, "Descent of the King of Knights");
@@ -30,7 +29,7 @@ namespace TestingApp
             edition = new Edition(magic, "Khanks of Tarkir", 2014);
             edition.CardList.AddCard(new Card("Abomination of Gudul", "Whenever Abomination of Gudul deals combat damage to a player, you may draw a card. If you do, discard a card."));
             magic.AddEdition(edition);
-            */
+            
             
             Console.WriteLine("Games:");
             PrintAll<Game>();

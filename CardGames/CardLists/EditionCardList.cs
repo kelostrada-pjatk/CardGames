@@ -21,11 +21,11 @@ namespace CardGames.CardLists
 
         public override void AddCard(int index, Card card, int quantity)
         {
-            if (CardsList.ContainsKey(index))
+            if (Cards.Count > 0 && Cards.Any(c => c.Index == index))
             {
-                throw new Exception("Cannot replace a card on already exisiting index");
+                return;
             }
-            if (CardsList.Any(c => c.Value.Card == card))
+            if (Cards.Any(c => c.Card == card))
             {
                 throw new Exception("Cannot add the same card twice");
             }

@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using CardGames.CardLists;
 
 namespace CardGames
 {
@@ -14,6 +17,7 @@ namespace CardGames
             Name = name;
             Description = description;
             IsPublished = null;
+            Lists = new List<CardInList>();
         }
 
         public void Publish()
@@ -30,5 +34,17 @@ namespace CardGames
         {
             return String.Format("{0}\nDescription:\n{1}\nPublish State: {2}", Name, Description, IsPublished ?? (object) "not set");
         }
+
+        protected List<CardInList> Lists { get; set; }
+
+        public void AddToList(CardInList list)
+        {
+            if (!Lists.Contains(list))
+            {
+                Lists.Add(list);
+                list.CardList.AddCard(this);
+            }
+        }
+
     }
 }
