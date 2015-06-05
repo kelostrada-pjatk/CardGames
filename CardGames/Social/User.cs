@@ -40,7 +40,7 @@ namespace CardGames.Social
             Password = password.GetHashCode();
             ContactData = new ContactData {Email = email, Phone = phoneNumber};
             LoginHistory = new List<DateTime>();
-            Messages = new List<Message>();
+            Messages = new List<BaseMessage>();
         }
 
         public bool CheckLogin(string password)
