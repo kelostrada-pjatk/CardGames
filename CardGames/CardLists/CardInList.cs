@@ -8,8 +8,12 @@ namespace CardGames.CardLists
         public CardInList(Card card, CardList cardList, int index)
         {
             Card = card;
+            
             CardList = cardList;
             Index = index;
+            Quantity = 1;
+            Card.AddList(this);
+            CardList.AddCard(this);
         }
 
         public CardInList(Card card, CardList cardList, int index, int quantity)
@@ -22,5 +26,6 @@ namespace CardGames.CardLists
         public int Quantity { get; set; }
         public Card Card { get; set; }
         public CardList CardList { get; set; }
+
     }
 }

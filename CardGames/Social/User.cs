@@ -14,7 +14,12 @@ namespace CardGames.Social
         public ContactData ContactData { get; private set; }
 
         private readonly HashSet<Deck> _decks = new HashSet<Deck>();
-        
+
+        public HashSet<Deck> Decks
+        {
+            get { return _decks; }
+        }
+
         public List<DateTime> LoginHistory { get; private set; }
 
         public DateTime LastLogin
@@ -35,6 +40,7 @@ namespace CardGames.Social
             Password = password.GetHashCode();
             ContactData = new ContactData {Email = email, Phone = phoneNumber};
             LoginHistory = new List<DateTime>();
+            Messages = new List<Message>();
         }
 
         public bool CheckLogin(string password)
@@ -47,10 +53,9 @@ namespace CardGames.Social
             return false;
         }
 
-        public void Comment(Deck deck, string commentDescription)
+        public int Comment(Deck deck, string commentDescription)
         {
-            var comment = new Comment(commentDescription, this);
-            deck.AddComment(comment);
+            return deck.AddComment(commentDescription, this);
         }
 
         public Deck CreateDeck(string name)
@@ -85,6 +90,24 @@ namespace CardGames.Social
         {
             return GetAllUsers().FirstOrDefault(u => u.Login == login);
         }
+        
+        public List<BaseMessage> Messages { get; private set; }
 
+        public void AddMessage(BaseMessage message)
+        {
+            if (!Messages.Contains(message))
+            {
+                Messages.Add(message);
+                message.Author = this;
+            }
+        }
+
+        public void RemoveMessage(BaseMessage baseMessage)
+        {
+            if (Messages.Contains(baseMessage))
+            {
+                Messages.Remove(baseMessage);
+            }
+        }
     }
 }

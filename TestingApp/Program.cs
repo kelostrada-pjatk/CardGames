@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 using CardGames;
+using CardGames.CardLists;
+using CardGames.Social;
 
 namespace TestingApp
 {
@@ -16,25 +18,85 @@ namespace TestingApp
 
         static void Main(string[] args)
         {
-            //ClassExtension.LoadData();
-
-            
+            ClassExtension.LoadData();
+            /*
             var cardfight = new Game("Cardfight!! Vanguard", 2012);
-            var edition = new Edition(cardfight, "Descent of the King of Knights");
+            var edition = new Edition(cardfight, "BT01", "Descent of the King of Knights");
             edition.CardList.AddCard(new Card("King of Knights, Alfred", "[CONT](VC):Your units cannot boost this unit."));
             edition.CardList.AddCard(new Card("Blaster Blade", "Blablabla"));
             cardfight.AddEdition(edition);
             
             var magic = new Game("Magic the gathering", 1995);
-            edition = new Edition(magic, "Khanks of Tarkir", 2014);
-            edition.CardList.AddCard(new Card("Abomination of Gudul", "Whenever Abomination of Gudul deals combat damage to a player, you may draw a card. If you do, discard a card."));
+            edition = new Edition(magic, "KTK","Khanks of Tarkir", 2014);
+            var card1 = new Card("Abomination of Gudul",
+                "Whenever Abomination of Gudul deals combat damage to a player, you may draw a card. If you do, discard a card.");
+            var card2 = new Card("Alabaster Kirin", "Flying, Vigilance");
+            edition.CardList.AddCard(card1);
+            edition.CardList.AddCard(card2);
             magic.AddEdition(edition);
+
+            var testUser = new User("kelu", "123qwe", "kelostrada@gmail.com", "12345678");
             
+            var deck = testUser.CreateDeck("ABC");
+            deck.AddCard(1, card1, 2);
+            deck.AddCard(1, card2, 3);
+
+            var commentId = deck.AddComment("What a nice deck!", testUser);
+            */
+
+            Console.WriteLine("Enter login:");
+            var login = Console.ReadLine();
+            Console.WriteLine("Enter password:");
+            var password = Console.ReadLine();
+
+            var user = User.LoginUser(login, password);
+
+            if (user == null)
+            {
+                Console.WriteLine("Login failed.");
+                return;
+            }
+
+            Console.WriteLine("--------------------------------------------");
+
+            Console.WriteLine("User decks: ");
+
+            foreach (var d in user.Decks)
+            {
+                Console.WriteLine(d.Name);
+                foreach (var c in d.Cards)
+                {
+                    Console.WriteLine("{0}x {1}", c.Quantity, c.Card.Name);
+                }
+                Console.WriteLine("=====================");
+                Console.WriteLine("Comments:");
+                foreach (var c in d.Comments)
+                {
+                    Console.WriteLine("Author: {0}, Message: {1}", c.Author.Login, c.Description);
+                }
+            }
+
+            Console.WriteLine("--------------------------------------------");
             
             Console.WriteLine("Games:");
             PrintAll<Game>();
 
-            //ClassExtension.GetAll<Game>().First().Editions.First().CardList.RemoveCard(1);
+            Console.WriteLine("--------------------------------------------");
+
+            Console.WriteLine("Edition in game Magic the Gathering by name:");
+            var name = Console.ReadLine();
+            var game = ClassExtension.GetAll<Game>().First(g => g.Name == "Magic the gathering");
+            var ed = game.GetEdition(name);
+            if (ed == null)
+            {
+                Console.WriteLine("No edition by name {0}", name);
+            }
+            else
+            {
+                Console.WriteLine(game.GetEdition(name));
+            }
+
+            Console.WriteLine("--------------------------------------------");
 
             Console.WriteLine("\nCards:");
             foreach (var card in ClassExtension.GetAll<Card>())

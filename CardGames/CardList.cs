@@ -22,7 +22,7 @@ namespace CardGames
 
         public abstract string Link { get; }
 
-        protected List<CardInList> Cards { get; set; }
+        public List<CardInList> Cards { get; protected set; } // Asocjacja z atrybutem
         
         protected CardList(bool isPublic, string name)
         {
@@ -30,6 +30,16 @@ namespace CardGames
             Name = name;
             Cards = new List<CardInList>();
         }
+
+        public void AddCard(CardInList cardInList)
+        {
+            if (!Cards.Contains(cardInList))
+            {
+                Cards.Add(cardInList);
+            }
+        }
+
+        #region old cards
 
         protected CardInList GetCard(Card card)
         {
@@ -113,5 +123,7 @@ namespace CardGames
                 Cards.Remove(cardInList);
             }
         }
+
+        #endregion
     }
 }

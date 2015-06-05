@@ -35,16 +35,25 @@ namespace CardGames
             return String.Format("{0}\nDescription:\n{1}\nPublish State: {2}", Name, Description, IsPublished ?? (object) "not set");
         }
 
-        protected List<CardInList> Lists { get; set; }
+        protected List<CardInList> Lists { get; set; } // Asocjacja z atrybutem
 
-        public void AddToList(CardInList list)
+        public void AddList(CardInList cardInList)
         {
-            if (!Lists.Contains(list))
+            if (!Lists.Contains(cardInList))
             {
-                Lists.Add(list);
-                list.CardList.AddCard(this);
+                Lists.Add(cardInList);
             }
         }
+
+        #region old
+        public void AddToList(CardInList cardInList)
+        {
+            if (Lists.Any(l => l.Card == cardInList.Card)) return;
+
+            Lists.Add(cardInList);
+            cardInList.CardList.AddCard(this);
+        }
+#endregion
 
     }
 }

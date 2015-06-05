@@ -6,7 +6,7 @@ namespace CardGames.CardLists
     [Serializable]
     public class EditionCardList : CardList
     {
-        public Edition Edition { get; private set; }
+        public Edition Edition { get; private set; } // Asocjacja Binarna
 
         public override string Link
         {
@@ -16,7 +16,20 @@ namespace CardGames.CardLists
         public EditionCardList(Edition edition) : 
             base(true, edition.Name)
         {
-            Edition = edition;
+            SetEdition(edition);
+        }
+
+        public void SetEdition(Edition edition)
+        {
+            if (Edition != edition)
+            {
+                if (Edition != null)
+                {
+                    Edition.ResetCardList();
+                }
+                Edition = edition;
+                Edition.SetCardList(this);
+            }
         }
 
         public override void AddCard(int index, Card card, int quantity)
@@ -34,6 +47,16 @@ namespace CardGames.CardLists
                 throw new Exception("Edition cannot have more than one card of a type");
             }
             base.AddCard(index, card, 1);
+        }
+
+        public void ResetEdition()
+        {
+            if (Edition != null)
+            {
+                var edition = Edition;
+                Edition = null;
+                edition.ResetCardList();
+            }
         }
     }
 }
