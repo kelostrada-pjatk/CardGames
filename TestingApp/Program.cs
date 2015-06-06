@@ -18,8 +18,8 @@ namespace TestingApp
 
         static void Main(string[] args)
         {
-            ClassExtension.LoadData();
-            /*
+            //ClassExtension.LoadData();
+            
             var cardfight = new Game("Cardfight!! Vanguard", 2012);
             var edition = new Edition(cardfight, "BT01", "Descent of the King of Knights");
             edition.CardList.AddCard(new Card("King of Knights, Alfred", "[CONT](VC):Your units cannot boost this unit."));
@@ -42,8 +42,7 @@ namespace TestingApp
             deck.AddCard(1, card2, 3);
 
             var commentId = deck.AddComment("What a nice deck!", testUser);
-            */
-
+            
             Console.WriteLine("Enter login:");
             var login = Console.ReadLine();
             Console.WriteLine("Enter password:");
@@ -74,6 +73,15 @@ namespace TestingApp
                 {
                     Console.WriteLine("Author: {0}, Message: {1}", c.Author.Login, c.Description);
                 }
+            }
+
+            Console.WriteLine("--------------------------------------------");
+
+            Console.WriteLine("User Messages:");
+
+            foreach (var message in user.Messages)
+            {
+                Console.WriteLine(message.HtmlContent);
             }
 
             Console.WriteLine("--------------------------------------------");

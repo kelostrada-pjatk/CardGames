@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MagicTheGathering.Exceptions
+namespace WorldOfWarcraft
 {
-    public class WrongCardTypeException : Exception
+    public abstract class CardType
     {
+        public abstract CardType Copy();
     }
 }

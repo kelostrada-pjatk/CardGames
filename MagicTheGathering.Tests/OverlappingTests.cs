@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using CardGames.Exceptions;
 using MagicTheGathering.Cards;
-using MagicTheGathering.Exceptions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace MagicTheGathering.Tests
@@ -16,7 +16,7 @@ namespace MagicTheGathering.Tests
             {
                 new Artifact(),
                 new Creature(2, 1)
-            });
+            }, null);
 
             Assert.AreEqual("Artifact Creature", card.Type);
         }
@@ -24,7 +24,7 @@ namespace MagicTheGathering.Tests
         [TestMethod]
         public void CreaturePowerAndShield()
         {
-            var card = new MagicCard("Scoria Elemental", "", 6, 1);
+            var card = new MagicCard("Scoria Elemental", "", 6, 1, null);
             Assert.AreEqual(6, card.Power);
             Assert.AreEqual(1, card.Shield);
         }
@@ -33,7 +33,7 @@ namespace MagicTheGathering.Tests
         [ExpectedException(typeof(WrongCardTypeException))]
         public void NonCreaturePowerShouldThrow()
         {
-            var card = new MagicCard("Island", "", 'U');
+            var card = new MagicCard("Island", "", 'U', null);
             var power = card.Power;
         }
     }

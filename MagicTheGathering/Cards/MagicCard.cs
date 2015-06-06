@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CardGames;
-using MagicTheGathering.Exceptions;
+using CardGames.Exceptions;
+using MagicTheGathering.Cards.SubTypes;
 
 namespace MagicTheGathering.Cards
 {
@@ -12,16 +11,20 @@ namespace MagicTheGathering.Cards
     {
         #region Constructors
 
-        protected MagicCard(string name, string description) : base(name, description)
+        protected MagicCard(string name, string description, SubType subType) : base(name, description)
         {
             Types = new HashSet<CardType>();
+            if (subType != null)
+            {
+                SubType = subType.Copy();
+            }
         }
 
         /// <summary>
         /// Universal constructor
         /// </summary>
-        public MagicCard(string name, string description, HashSet<CardType> types)
-            : this(name, description)
+        public MagicCard(string name, string description, HashSet<CardType> types, SubType subType)
+            : this(name, description, subType)
         {
             foreach (var type in types)
             {
@@ -32,7 +35,8 @@ namespace MagicTheGathering.Cards
         /// <summary>
         /// Constructor for Land
         /// </summary>
-        public MagicCard(string name, string description, char mana) : this(name, description)
+        public MagicCard(string name, string description, char mana, SubType subType)
+            : this(name, description, subType)
         {
             Types.Add(new Land(mana));
         }
@@ -40,8 +44,8 @@ namespace MagicTheGathering.Cards
         /// <summary>
         /// Constructor for Creature
         /// </summary>
-        public MagicCard(string name, string description, int power, int shield)
-            : this(name, description)
+        public MagicCard(string name, string description, int power, int shield, SubType subType)
+            : this(name, description, subType)
         {
             Types.Add(new Creature(power, shield));
         }
@@ -78,6 +82,12 @@ namespace MagicTheGathering.Cards
 
         #endregion
 
+        #region second Aspect
+
+        public SubType SubType { get; protected set; }
+
+        #endregion
+
         public String Type
         {
             get { return Types.Aggregate("", (current, t) => current + (t.GetType().Name + " ")).Trim(); }
@@ -104,6 +114,32 @@ namespace MagicTheGathering.Cards
                     throw new WrongCardTypeException();
                 }
                 return Creature.Shield;
+            }
+        }
+
+        public string FamilyName
+        {
+            get
+            {
+                var dragon = SubType as Dragon;
+                if (dragon == null)
+                {
+                    throw new WrongCardTypeException(); 
+                }
+                return dragon.FamilyName;
+            }
+        }
+
+        public AuraTarget AuraTarget
+        {
+            get
+            {
+                var aura = SubType as Aura;
+                if (aura == null)
+                {
+                    throw new WrongCardTypeException();
+                }
+                return aura.AuraTarget;
             }
         }
 
