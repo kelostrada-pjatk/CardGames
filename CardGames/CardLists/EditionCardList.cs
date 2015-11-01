@@ -32,6 +32,9 @@ namespace CardGames.CardLists
             }
         }
 
+        /// <summary>
+        /// przesłonięcie metod
+        /// </summary>
         public override void AddCard(int index, Card card, int quantity)
         {
             if (Cards.Count > 0 && Cards.Any(c => c.Index == index))

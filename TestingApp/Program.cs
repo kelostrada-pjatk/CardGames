@@ -16,9 +16,29 @@ namespace TestingApp
             }
         }
 
+        public static string ToOrdinal(long number)
+        {
+            if (number < 0) return number.ToString();
+            var rem = number % 100;
+            if (rem >= 11 && rem <= 13) return number + "th";
+            switch (number % 10)
+            {
+                case 1:
+                    return number + "st";
+                case 2:
+                    return number + "nd";
+                case 3:
+                    return number + "rd";
+                default:
+                    return number + "th";
+            }
+        }
+
         static void Main(string[] args)
         {
             ClassExtension.LoadData(); // Ekstensja klas - plus trwałość 
+
+            User.MinPasswordLength = 4; // Atrybut klasowy
 
             // Odkomentować jeśli jest potrzeba wygenerować dane od nowa!!
 
@@ -27,17 +47,16 @@ namespace TestingApp
             var edition = new Edition(cardfight, "BT01", "Descent of the King of Knights");
             edition.CardList.AddCard(new Card("King of Knights, Alfred", "[CONT](VC):Your units cannot boost this unit."));
             edition.CardList.AddCard(new Card("Blaster Blade", "Blablabla"));
-            cardfight.AddEdition(edition);
+            cardfight.AddEdition(edition); // przeciążenie metod
             
             var magic = new Game("Magic the gathering", 1995);
-            edition = new Edition(magic, "KTK","Khanks of Tarkir", 2014);
+            edition = magic.AddEdition("KTK", "Khanks of Tarkir", 2014); // przeciążenie metod
             var card1 = new Card("Abomination of Gudul",
                 "Whenever Abomination of Gudul deals combat damage to a player, you may draw a card. If you do, discard a card.");
             var card2 = new Card("Alabaster Kirin", "Flying, Vigilance");
             edition.CardList.AddCard(card1);
             edition.CardList.AddCard(card2);
-            magic.AddEdition(edition);
-
+            
             var testUser = new User("kelu", "123qwe", "kelostrada@gmail.com", "12345678");
             
             var deck = testUser.CreateDeck("ABC");
@@ -52,7 +71,7 @@ namespace TestingApp
             Console.WriteLine("Enter password:");
             var password = Console.ReadLine();
 
-            var user = User.LoginUser(login, password);
+            var user = User.LoginUser(login, password); // metoda klasowa
 
             if (user == null)
             {
@@ -61,6 +80,8 @@ namespace TestingApp
             }
 
             Console.WriteLine("User {0} logged in. Phone: {1}, Email: {2}", user.Login, user.ContactData.Phone, user.ContactData.Email); // Atrybut złożony (user.ContactData)
+            Console.WriteLine("User logged in for {0} time", ToOrdinal(user.LoginHistory.Count)); // atrybut powtarzalny
+            Console.WriteLine("Last login: {0}", user.LastLogin); // atrybut pochodny
 
             Console.WriteLine("--------------------------------------------");
 
@@ -101,7 +122,7 @@ namespace TestingApp
                 Console.WriteLine(ed);
                 if (ed.YearOfRelease == null) // Atrybut opcjonalny
                 {
-                    Console.WriteLine("Edition has no set year of release.");
+                    Console.WriteLine("Edition has no year of release set.");
                 }
             }
 
@@ -114,7 +135,7 @@ namespace TestingApp
                 {
                     Console.WriteLine("Card {0} publish status is not set. Please chose if the card should be published? Y/N/I(gnore)", card.Name);
                     var line = Console.ReadLine();
-                    line = line == null ? "" : line.ToUpper();
+                    line = line?.ToUpper() ?? "";
                     while (line != "Y" && line != "N" && line != "I")
                     {
                         line = Console.ReadLine();

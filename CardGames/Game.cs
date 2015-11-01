@@ -24,6 +24,9 @@ namespace CardGames
             Editions = new Dictionary<string, Edition>();
         }
 
+        /// <summary>
+        /// przeciążenie metod
+        /// </summary>
         public void AddEdition(Edition edition)
         {
             if (edition.Game != this)
@@ -37,10 +40,14 @@ namespace CardGames
             }
         }
 
-        public void AddEdition(string symbol, string name, int yearOfRelease)
+        /// <summary>
+        /// przeciążenie metod
+        /// </summary>
+        public Edition AddEdition(string symbol, string name, int yearOfRelease)
         {
             var edition = new Edition(this, symbol, name, yearOfRelease);
             AddEdition(edition);
+            return edition;
         }
 
         public Edition GetEdition(string symbol)

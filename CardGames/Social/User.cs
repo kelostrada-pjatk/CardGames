@@ -8,7 +8,7 @@ namespace CardGames.Social
     [Serializable]
     public class User : ClassExtension
     {
-        public static int MinPasswordLength = 5;
+        public static int MinPasswordLength = 5; // atrybut klasowy
         public string Login { get; private set; }
         private int Password { get; set; }
         public ContactData ContactData { get; private set; } // atrybut złożony
@@ -20,13 +20,15 @@ namespace CardGames.Social
             get { return _decks; }
         }
 
-        public List<DateTime> LoginHistory { get; private set; }
+        public List<DateTime> LoginHistory { get; private set; } // atrybut powtarzalny
 
-        public DateTime LastLogin
+        public DateTime? LastLogin // atrybut pochodny
         {
             get
             {
-                return LoginHistory.Last();
+                // getting second login from last or null if there is too few
+                var lastLogins = LoginHistory.Skip(Math.Max(0, LoginHistory.Count - 2)).ToList();
+                return lastLogins.Count() < 2 ? null : (DateTime?) lastLogins.First();
             }
         }
 
@@ -72,6 +74,9 @@ namespace CardGames.Social
             return deck;
         }
 
+        /// <summary>
+        /// Metoda klasowa
+        /// </summary>
         public static User LoginUser(string login, string password) {
             var user = GetUserByLogin(login);
             if (user != null && user.CheckLogin(password))
