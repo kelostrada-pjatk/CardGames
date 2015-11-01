@@ -8,31 +8,7 @@ namespace TestingApp
 {
     class Program
     {
-        static void PrintAll<T>() where T : ClassExtension
-        {
-            foreach (var elem in ClassExtension.GetAll<T>())
-            {
-                Console.WriteLine(elem);
-            }
-        }
-
-        public static string ToOrdinal(long number)
-        {
-            if (number < 0) return number.ToString();
-            var rem = number % 100;
-            if (rem >= 11 && rem <= 13) return number + "th";
-            switch (number % 10)
-            {
-                case 1:
-                    return number + "st";
-                case 2:
-                    return number + "nd";
-                case 3:
-                    return number + "rd";
-                default:
-                    return number + "th";
-            }
-        }
+        // przesłonięcie metody w klasie na przykład EditionCardList - public override void AddCard(int index, Card card, int quantity)
 
         static void Main(string[] args)
         {
@@ -41,7 +17,7 @@ namespace TestingApp
             User.MinPasswordLength = 4; // Atrybut klasowy
 
             // Odkomentować jeśli jest potrzeba wygenerować dane od nowa!!
-
+            
             /*
             var cardfight = new Game("Cardfight!! Vanguard", 2012);
             var edition = new Edition(cardfight, "BT01", "Descent of the King of Knights");
@@ -157,6 +133,31 @@ namespace TestingApp
             ClassExtension.SaveData();
 
 
+        }
+        static void PrintAll<T>() where T : ClassExtension
+        {
+            foreach (var elem in ClassExtension.GetAll<T>())
+            {
+                Console.WriteLine(elem);
+            }
+        }
+
+        static string ToOrdinal(long number)
+        {
+            if (number < 0) return number.ToString();
+            var rem = number % 100;
+            if (rem >= 11 && rem <= 13) return number + "th";
+            switch (number % 10)
+            {
+                case 1:
+                    return number + "st";
+                case 2:
+                    return number + "nd";
+                case 3:
+                    return number + "rd";
+                default:
+                    return number + "th";
+            }
         }
     }
 }
