@@ -8,13 +8,8 @@ namespace CardGames
     {
         public string Symbol { get; private set; }
         public string Name { get; private set; }
-        private int? _yearOfRelease; // atr. opcjonalny
-
-        public string YearOfRelease
-        {
-            get { return _yearOfRelease == null ? "<none>" : _yearOfRelease.ToString(); }
-        }
-
+        public int? YearOfRelease; // atr. opcjonalny
+        
         public Game Game { get; private set; } // atr. złożony
         public EditionCardList CardList { get; private set; } // Asocjacja Binarna
 
@@ -30,25 +25,20 @@ namespace CardGames
         public Edition(Game game, string symbol, string name, int yearOfRelease)
             : this(game, symbol, name)
         {
-            _yearOfRelease = yearOfRelease;
+           YearOfRelease = yearOfRelease;
         }
 
         public void SetCardList(EditionCardList cardList)
         {
-            if (cardList != CardList)
-            {
-                if (CardList != null)
-                {
-                    CardList.ResetEdition();
-                }
-                CardList = cardList;
-                CardList.SetEdition(this);
-            }
+            if (cardList == CardList) return;
+            CardList?.ResetEdition();
+            CardList = cardList;
+            CardList.SetEdition(this);
         }
 
         public override string ToString()
         {
-            return String.Format("{0}\nRelease year: {1}", Name, YearOfRelease);
+            return $"{Name}\nRelease year: {YearOfRelease?.ToString() ?? "<none>"}";
         }
 
         public void SetGame(Game game)

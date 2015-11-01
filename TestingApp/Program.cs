@@ -18,7 +18,10 @@ namespace TestingApp
 
         static void Main(string[] args)
         {
-            ClassExtension.LoadData();
+            ClassExtension.LoadData(); // Ekstensja klas - plus trwałość 
+
+            // Odkomentować jeśli jest potrzeba wygenerować dane od nowa!!
+
             /*
             var cardfight = new Game("Cardfight!! Vanguard", 2012);
             var edition = new Edition(cardfight, "BT01", "Descent of the King of Knights");
@@ -57,6 +60,8 @@ namespace TestingApp
                 return;
             }
 
+            Console.WriteLine("User {0} logged in. Phone: {1}, Email: {2}", user.Login, user.ContactData.Phone, user.ContactData.Email); // Atrybut złożony (user.ContactData)
+
             Console.WriteLine("--------------------------------------------");
 
             Console.WriteLine("User decks: ");
@@ -93,7 +98,11 @@ namespace TestingApp
             }
             else
             {
-                Console.WriteLine(game.GetEdition(name));
+                Console.WriteLine(ed);
+                if (ed.YearOfRelease == null) // Atrybut opcjonalny
+                {
+                    Console.WriteLine("Edition has no set year of release.");
+                }
             }
 
             Console.WriteLine("--------------------------------------------");

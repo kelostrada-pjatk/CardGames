@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace CardGames.Social
 {
+    /// <summary>
+    /// Atrybut złożony
+    /// </summary>
     [Serializable]
     public class ContactData
     {

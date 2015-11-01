@@ -11,7 +11,7 @@ namespace CardGames.Social
         public static int MinPasswordLength = 5;
         public string Login { get; private set; }
         private int Password { get; set; }
-        public ContactData ContactData { get; private set; }
+        public ContactData ContactData { get; private set; } // atrybut złożony
 
         private readonly HashSet<Deck> _decks = new HashSet<Deck>();
 
@@ -40,7 +40,7 @@ namespace CardGames.Social
             Password = password.GetHashCode();
             ContactData = new ContactData {Email = email, Phone = phoneNumber};
             LoginHistory = new List<DateTime>();
-            Messages = new List<Message>();
+            Messages = new List<BaseMessage>();
         }
 
         public bool CheckLogin(string password)
