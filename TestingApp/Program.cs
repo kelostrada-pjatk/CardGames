@@ -40,6 +40,7 @@ namespace TestingApp
             deck.AddCard(1, card2, 3);
 
             var commentId = deck.AddComment("What a nice deck!", testUser);
+            */
             
             Console.WriteLine("Enter login:");
             var login = Console.ReadLine();
@@ -75,6 +76,7 @@ namespace TestingApp
                 {
                     Console.WriteLine("Author: {0}, Message: {1}", c.Author.Login, c.Description);
                 }
+                var comment = d.GetComment(1); // Kompozycja - przykład użycia metody która wykorzystuje pole Deck._comments odpowiedzialne za realizację faktycznej kompozycji
             }
 
             Console.WriteLine("--------------------------------------------");
@@ -96,7 +98,7 @@ namespace TestingApp
             Console.WriteLine("Edition in game Magic the Gathering by name:");
             var name = Console.ReadLine();
             var game = ClassExtension.GetAll<Game>().First(g => g.Name == "Magic the gathering");
-            var ed = game.GetEdition(name);
+            var ed = game.GetEdition(name); // Asocjacja kwalifikowana - przykład użycia metody która wykorzystuje pole Game.Editions obsługującego faktyczną asocjację kwalifikowaną
             if (ed == null)
             {
                 Console.WriteLine("No edition by name {0}", name);
@@ -108,8 +110,11 @@ namespace TestingApp
                 {
                     Console.WriteLine("Edition has no year of release set.");
                 }
-            }
 
+                Console.WriteLine("Cards amount: " + ed.CardList.Cards.Count); // Asocjacja binarna
+                var quantity = ed.CardList.Cards.FirstOrDefault()?.Quantity; // Asocjacja z atrybutem
+            }
+            
             Console.WriteLine("--------------------------------------------");
 
             Console.WriteLine("\nCards:");
