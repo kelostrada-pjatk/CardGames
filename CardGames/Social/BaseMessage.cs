@@ -37,5 +37,8 @@ namespace CardGames.Social
             SendDate = DateTime.Now;
         }
 
+        // polimorfizm
+        public abstract string HtmlContent { get; }
+
     }
 }
